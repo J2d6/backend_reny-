@@ -2,15 +2,15 @@ package repository
 
 import (
 	"github.com/J2d6/reny_event/domain/interfaces"
-	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgxpool"
 )
 
 
 
 type EvenementRepository struct {
-	conn *pgx.Conn
+	conn *pgxpool.Pool
 }
 
-func NewEvenementRepository(conn *pgx.Conn)  interfaces.EvenementRepository {
+func NewEvenementRepository(conn *pgxpool.Pool)  interfaces.EvenementRepository {
 	return EvenementRepository{conn: conn}
 }

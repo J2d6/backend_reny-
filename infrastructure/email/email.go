@@ -27,7 +27,7 @@ func SendGomail(reservationInfos models.ReservationDetails)  {
 	CreateQR()
 	// fmt.Println("CREATE QR")
 	m := gomail.NewMessage()
-	m.SetHeader("From", "j2d6.pro@gamil.com")
+	m.SetHeader("From", "j2d6.pro@gmail.com")
 	m.SetHeader("To",reservationInfos.Email)
 	m.SetHeader("Subject", "CONFIRMATION DE RESERVATION")
 	m.SetBody("text/html", body.String())

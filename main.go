@@ -24,15 +24,17 @@ func main() {
 
 	evenementRepositorry := repository.NewEvenementRepository(conn)
 	evenementService := service.NewEvenementService(evenementRepositorry)
-	// authService := &service.AuthentificationService{}
-	// jwtSecret := "votre-secret-jwt-temporaire"
+
+	utilisateurepository := repository.NewUtilisateurRepository(conn)
+	utilisateuService := service.NewAuthentificationService(utilisateurepository)
+
 
 	// Configurer les routes
-	application.SetupRoutes(r, evenementService)
+	application.SetupRoutes(r, evenementService, utilisateuService)
 
 	// Démarrer le serveur
 	port := ":3000"
-	log.Printf(port)
+	log.Printf("Serveur démarré sur le port %s", port)
 
 	if err := http.ListenAndServe(port, r); err != nil {
 		log.Fatalf("Erreur du serveur: %v", err)

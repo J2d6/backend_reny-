@@ -8,7 +8,4 @@ import (
 
 type UtilisateurRepository interface {
 	VerifierCredentials(ctx context.Context, login, motDePasse string) (*models.Utilisateur, error)
-	GetUtilisateurByLogin(ctx context.Context, login string) (*models.Utilisateur, error)
-	CreerUtilisateur(ctx context.Context, login, motDePasse string) (*models.Utilisateur, error)
-	CloseConn()
 }

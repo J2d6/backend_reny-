@@ -41,3 +41,8 @@ type EvenementRepository interface {
 	GetAllReservationsFor(id_evenement uuid.UUID)([]byte, error)
 	ValidateReservation(id_Evenement uuid.UUID) error
 }
+
+
+type Utilisateur struct {
+	
+}

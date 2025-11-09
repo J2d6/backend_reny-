@@ -14,7 +14,7 @@ func TestReservation(t *testing.T) {
 		repo := CreateRepository(t)
 
 		req := models.ReservationRequest{
-			Email:       "client@example.com",
+			Email:       "noelardau@gmail.com",
 			EvenementID: "fc142deb-73c7-4dbb-8f51-fe05a8231836",
 			PlacesDemandees: []models.TypePlaceDemande{
 				{
@@ -65,7 +65,7 @@ func TestGetReservation(t *testing.T) {
 func TestValidateReservation(t *testing.T) {
 	t.Run("Validation with success", func (t *testing.T) {
 		repo := CreateRepository(t)
-		id_Evenement := uuid.MustParse("b5c20410-aeed-4403-85be-13c4a2263f2e")
+		id_Evenement := uuid.MustParse("2c24611e-1b4c-401f-8ead-78da264f81e1")
 		err := repo.ValidateReservation(id_Evenement)
 		if err != nil {
 			t.Errorf("Failed to validate reservation : %v", err)

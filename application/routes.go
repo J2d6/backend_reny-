@@ -1,15 +1,14 @@
-
 package application
 
 import (
 	"github.com/J2d6/reny_event/application/handler"
 	"github.com/J2d6/reny_event/domain/interfaces"
+	"github.com/J2d6/reny_event/domain/service"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 )
 
-
-func SetupRoutes(r chi.Router, evenementService interfaces.EvenementService) {
+func SetupRoutes(r chi.Router, evenementService interfaces.EvenementService, authService *service.AuthentificationService) {
 	
 	r.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
@@ -20,19 +19,20 @@ func SetupRoutes(r chi.Router, evenementService interfaces.EvenementService) {
 		MaxAge:           86400, 
 	}))
 
+	// Route d'authentification (publique)
+	r.Post("/auth", handler.AuthHandler(authService))
 
 	r.Route("/v1", func(r chi.Router) {
+		// Routes publiques
 		r.Get("/evenements/{id}", handler.GetEvenementByIDHandler(evenementService))
-		r.Post("/evenements", handler.CreationEvenementHandler(evenementService)) 
-		r.Post("/reservations", handler.ReserverHandler(evenementService)) 
 		r.Get("/evenements/reservations/{id}", handler.AllReservationsHandler(evenementService)) 
-		r.Post("/reservations/validate/{id}", handler.ValiderReservation(evenementService))
-	})
+		r.Post("/reservations", handler.ReserverHandler(evenementService)) 
 
-	// Route de santé
-	// r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
-	// 	w.Header().Set("Content-Type", "application/json")
-	// 	w.WriteHeader(http.StatusOK)
-	// 	w.Write([]byte(`{"status": "ok"}`))
-	// })
+		// Routes protégées (nécessitent une authentification)
+		r.Group(func(r chi.Router) {
+			r.Use(handler.AuthMiddleware) // Applique le middleware d'auth à toutes les routes de ce groupe		
+			r.Post("/evenements", handler.CreationEvenementHandler(evenementService)) 
+			r.Post("/reservations/validate/{id}", handler.ValiderReservation(evenementService))
+		})
+	})
 }
